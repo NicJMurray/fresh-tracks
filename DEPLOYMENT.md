@@ -13,7 +13,11 @@
 
 ## Publishing status
 
-The Worker, static assets, custom domain, D1 schema and 04:15 UTC daily refresh were deployed on 25 October 2026. The live API successfully read all five defaults (379 visible appearances, 376 distinct tracks, three shared tracks). Desktop and phone browser checks passed for the main flows. Initial Git setup remains in progress. The current GitHub integration rejected repository creation (`createRepository`), so an empty `NicJMurray/fresh-tracks` repository must be created by its owner before the initial push. The Cloudflare OAuth connection can deploy Workers and D1, but cannot currently create the API token needed by automatic builds. A manual deployment does not establish Git-triggered publication. Update this section after verifying the actual pipeline.
+The Worker, static assets, custom domain, D1 schema and 04:15 UTC daily refresh were deployed on 25 October 2026. The live API successfully read all five defaults (379 visible appearances, 376 distinct tracks, three shared tracks). Desktop and phone browser checks passed for the main flows.
+
+The source is now pushed to `NicJMurray/fresh-tracks` on `main`. Its first GitHub Actions run passed installation and the checked build (including all nine tests), then stopped at **Check deployment access** because the repository secret `CLOUDFLARE_API_TOKEN` is missing. The current GitHub connection cannot manage repository secrets, and the Cloudflare OAuth connection has not granted account API-token management. A manual deployment does not establish Git-triggered publication.
+
+To finish setup, create a token in [Cloudflare API Tokens](https://dash.cloudflare.com/profile/api-tokens) using the **Edit Cloudflare Workers** template for the deployment account and zone. Add **Account → D1 → Edit**. Store its value directly in [GitHub Actions repository secrets](https://github.com/NicJMurray/fresh-tracks/settings/secrets/actions/new), named `CLOUDFLARE_API_TOKEN`; do not paste it into chat or commit it. Rerun **Deploy Fresh Tracks** after saving it. Once that succeeds, confirm the deployed source commit and custom domain before marking automatic publishing verified.
 
 ## GitHub Actions
 

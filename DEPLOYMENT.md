@@ -15,7 +15,9 @@
 
 The Worker, static assets, custom domain, D1 schema and 04:15 UTC daily refresh were deployed on 25 October 2026. The live API successfully read all five defaults (379 visible appearances, 376 distinct tracks, three shared tracks). Desktop and phone browser checks passed for the main flows.
 
-The source is pushed to `NicJMurray/fresh-tracks` on `main`, and the `CLOUDFLARE_API_TOKEN` repository secret is configured. Its first authenticated run passed the checked build and credential check, then D1 rejected the migration operation with code 7403. The database schema is already provisioned and was verified through the Cloudflare connection. Normal publication now deploys code and assets without requiring database-administration access. Automatic publishing is being verified.
+Automatic publication was verified on 25 October 2026. Pushing commit `ac41310ccb0f5a53fa98d890b6e2ea2985351d9a` to `main` triggered [a successful GitHub Actions deployment](https://github.com/NicJMurray/fresh-tracks/actions/runs/40175849315). Its build passed all nine tests. Cloudflare deployed Worker version `0419c2d8-ae17-4be5-a93e-4aa5da771652`, tagged with that exact Git commit; the custom domain served the matching version and assets, and all five default seeds were readable.
+
+`CLOUDFLARE_API_TOKEN` is stored as an encrypted GitHub repository secret. Routine main-branch pushes publish the checked Worker and static assets. The database is already provisioned, and normal deployments retain its existing binding without administering the database. Apply future schema changes separately through a D1-capable connection before publishing code that depends on them.
 
 ## GitHub Actions
 

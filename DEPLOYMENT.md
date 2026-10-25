@@ -15,15 +15,13 @@
 
 The Worker, static assets, custom domain, D1 schema and 04:15 UTC daily refresh were deployed on 25 October 2026. The live API successfully read all five defaults (379 visible appearances, 376 distinct tracks, three shared tracks). Desktop and phone browser checks passed for the main flows.
 
-The source is now pushed to `NicJMurray/fresh-tracks` on `main`. Its first GitHub Actions run passed installation and the checked build (including all nine tests), then stopped at **Check deployment access** because the repository secret `CLOUDFLARE_API_TOKEN` is missing. The current GitHub connection cannot manage repository secrets, and the Cloudflare OAuth connection has not granted account API-token management. A manual deployment does not establish Git-triggered publication.
-
-To finish setup, create a token in [Cloudflare API Tokens](https://dash.cloudflare.com/profile/api-tokens) using the **Edit Cloudflare Workers** template for the deployment account and zone. Add **Account → D1 → Edit**. Store its value directly in [GitHub Actions repository secrets](https://github.com/NicJMurray/fresh-tracks/settings/secrets/actions/new), named `CLOUDFLARE_API_TOKEN`; do not paste it into chat or commit it. Rerun **Deploy Fresh Tracks** after saving it. Once that succeeds, confirm the deployed source commit and custom domain before marking automatic publishing verified.
+The source is pushed to `NicJMurray/fresh-tracks` on `main`, and the `CLOUDFLARE_API_TOKEN` repository secret is configured. Its first authenticated run passed the checked build and credential check, then D1 rejected the migration operation with code 7403. The database schema is already provisioned and was verified through the Cloudflare connection. Normal publication now deploys code and assets without requiring database-administration access. Automatic publishing is being verified.
 
 ## GitHub Actions
 
-`.github/workflows/deploy.yml` checks and deploys main-branch pushes. It requires the encrypted repository secret `CLOUDFLARE_API_TOKEN` with Workers Scripts Edit and D1 Edit on account `22c1482ec05957092be7a2df424c4543`. Initial domain provisioning additionally needs Workers Routes / zone access; the configured custom domain must be retained. The workflow fails clearly when the deployment token is absent.
+`.github/workflows/deploy.yml` checks and deploys main-branch pushes. It requires the encrypted repository secret `CLOUDFLARE_API_TOKEN` with Workers Scripts Edit on account `22c1482ec05957092be7a2df424c4543`. Initial domain provisioning additionally needs Workers Routes / zone access; the configured custom domain must be retained. The workflow fails clearly when the deployment token is absent.
 
-The pipeline installs locked dependencies, runs the checked build, applies pending D1 migrations, then deploys the Worker and static assets. Never place the token in code or public assets. Runtime Spotify or Google credentials are not required for this preview-based version.
+The pipeline installs locked dependencies, runs the checked build, then deploys the Worker and static assets. Schema changes are separate: apply the relevant migration files through a D1-capable Cloudflare connection (or Wrangler with D1 Edit) before deploying code that needs those changes. The initial schema is already installed. CI does not need permission to query or modify the database merely to retain its existing Worker binding. Never place the token in code or public assets. Runtime Spotify or Google credentials are not required for this preview-based version.
 
 For a configured local Wrangler identity:
 

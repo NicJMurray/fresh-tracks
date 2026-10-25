@@ -29,7 +29,5 @@ jobs:
             echo "::error::Set the encrypted CLOUDFLARE_API_TOKEN repository secret to enable automatic publishing."
             exit 1
           fi
-      - name: Apply D1 migrations
-        run: npx wrangler d1 migrations apply fresh-tracks --remote
       - name: Deploy Worker and assets
         run: npx wrangler deploy --tag "git-$GITHUB_SHA"

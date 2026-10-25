@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f5f6ef">
+  <meta name="description" content="Find the artists and tracks connecting your freshest Spotify playlists.">
+  <title>Fresh Tracks — catch the overlap</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231c493b'/%3E%3Ccircle cx='25' cy='32' r='15' fill='none' stroke='%23d8ef94' stroke-width='5'/%3E%3Ccircle cx='40' cy='32' r='15' fill='none' stroke='%23d8ef94' stroke-width='5'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/styles.css"><script type="module" src="/app.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar"><a class="brand" href="/" aria-label="Fresh Tracks home"><span class="brand-icon" aria-hidden="true"><i></i><i></i></span> FRESH TRACKS<span class="beta">01</span></a><a class="home" href="https://njmurray.com/">njmurray.com <span aria-hidden="true">↗</span></a></header>
+    <main>
+      <section class="hero"><div><p class="eyebrow"><span class="dot"></span> A little signal in the noise</p><h1>Catch the overlap.</h1><p class="intro">Fresh playlists. Familiar names. See who’s showing up everywhere, then follow the trail to your next discovery.</p></div><button id="refresh" class="button button-dark" type="button"><span aria-hidden="true">↻</span> Refresh signals</button></section>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <section class="metrics" aria-label="Collection at a glance"><div><span id="metric-seeds">5</span><p>seed playlists</p></div><div><span id="metric-artists">—</span><p>artists in the mix</p></div><div><span id="metric-tracks">—</span><p>distinct visible tracks</p></div><div><span id="metric-shared">—</span><p>tracks crossing over</p></div><div class="metric-status"><span class="status-mark" aria-hidden="true">◷</span><p id="checked-at">Reading your playlists…</p></div></section>
+      <div class="coverage"><span aria-hidden="true">ⓘ</span><p>Based on Spotify’s public previews, up to 100 tracks per playlist. Counts reflect visible tracks; full coverage and update dates aren’t available. <span id="coverage-extra"></span></p></div>
+      <div class="dashboard">
+        <aside class="panel seeds"><div class="panel-heading"><div><p class="eyebrow">01 / The starting point</p><h2>Seed playlists<span id="seed-count" class="count">5</span></h2></div><button id="share" class="text-button" type="button">Copy link <span aria-hidden="true">↗</span></button></div><p class="panel-intro">Your five defaults stay pinned. Add discoveries to widen the view.</p><ol id="seed-list" class="seed-list"><li class="loading">Loading your seed playlists…</li></ol><form id="add-form"><label for="seed-url">Add a Spotify playlist</label><div class="add-input"><input id="seed-url" name="playlist" type="text" placeholder="Paste a playlist link" autocomplete="off" required><button class="button button-dark" type="submit" aria-label="Add seed playlist">+</button></div><p class="field-help">Add one link, or paste several links separated by spaces.</p></form><p class="seed-footnote">Added seeds are saved here. Copy your collection link to open it on another device.</p></aside>
+        <section class="signals" aria-label="Overlap signals"><div class="signal-columns">
+          <section class="panel ranking"><div class="panel-heading"><div><p class="eyebrow">02 / The names to know</p><h2>Artist overlap</h2></div><span class="panel-symbol" aria-hidden="true">◎</span></div><div class="rank-controls"><p>Ranked by playlist reach</p><button id="artist-toggle" class="text-button" aria-expanded="false" type="button">Show all</button></div><ol id="artist-list" class="rank-list"><li class="loading">Finding the connections…</li></ol><p class="ranking-key">The badge counts distinct playlists. Track appearances break ties.</p></section>
+          <section class="panel ranking"><div class="panel-heading"><div><p class="eyebrow">03 / Crossing over</p><h2>Shared tracks</h2></div><span class="panel-symbol" aria-hidden="true">⇌</span></div><div class="rank-controls"><p>In two or more seeds</p><button id="track-toggle" class="text-button" aria-expanded="false" type="button">Show all</button></div><ol id="track-list" class="rank-list"><li class="loading">Listening for repeats…</li></ol><p class="ranking-key">A track is counted once per playlist, using its Spotify track ID.</p></section>
+        </div><div class="history-strip"><span class="spark" aria-hidden="true">✧</span><div><strong>Watch the new arrivals.</strong><p id="history-note">Weekly movement appears after the first week of snapshots.</p></div><span class="new-badge">NEW IN TOP 10</span></div></section>
+      </div>
+      <section class="discovery panel" id="discovery"><div class="discovery-head"><div><p class="eyebrow">04 / Follow the trail</p><h2>Find the next seed.</h2><p class="panel-intro">Start with the strongest overlaps. We’ll find other playlists, check their visible tracks, and show which names match.</p></div><a class="finder-link" href="https://playlist.njmurray.com/" target="_blank" rel="noopener">Inspired by Playlist Finder ↗</a></div>
+        <form id="discover-form"><div class="discovery-fields"><div><label for="artist-terms">Artists</label><textarea id="artist-terms" rows="3" placeholder="The leading artists appear here"></textarea></div><div><label for="track-terms">Tracks</label><textarea id="track-terms" rows="3" placeholder="The leading shared tracks appear here"></textarea></div><div class="discovery-action"><button id="use-leaders" type="button" class="text-button">Use current leaders ↺</button><p>Up to three per field, one per line.<br>Find playlists matching any of these names.</p><button id="discover-submit" class="button button-dark" type="submit">Find matching playlists <span aria-hidden="true">↗</span></button></div></div></form>
+        <div class="results-heading"><p id="discovery-status" role="status">Your next seed could be where these paths meet.</p><label class="check"><input id="fresh-only" type="checkbox"> Update hints only</label></div><p class="search-note">Update hints come from playlist titles or search descriptions. Only an observed content change confirms recent activity.</p><div id="discovery-results" class="discovery-results"></div>
+      </section>
+      <noscript><p class="notice">Enable JavaScript to compare playlists. You can still open your <a href="https://open.spotify.com/playlist/0ilfvphYHT6moQB3bKBrCN">first seed on Spotify</a>.</p></noscript>
+    </main>
+    <footer><span>Built for curiosity. <a href="https://njmurray.com/">A Nic Murray project ↗</a></span><span>Public playlist previews from <a href="https://open.spotify.com/" target="_blank" rel="noopener">Spotify ↗</a></span></footer>
+  </div><div id="toast" role="status" class="toast" hidden></div>
+</body>
+</html>

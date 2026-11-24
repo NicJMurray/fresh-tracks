@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "fresh-tracks",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-10-24",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": ["/api/*"] },
+  "d1_databases": [{
+    "binding": "DB",
+    "database_name": "fresh-tracks",
+    "database_id": "63b676ba-9719-43c0-bf4c-8f3aec1f8619",
+    "migrations_dir": "migrations"
+  }],
+  "triggers": { "crons": ["15 4 * * *"] },
+  "routes": [{ "pattern": "fresh.njmurray.com", "custom_domain": true }],
+  "version_metadata": { "binding": "VERSION" },
+  "observability": { "enabled": true, "head_sampling_rate": 1 }
+}

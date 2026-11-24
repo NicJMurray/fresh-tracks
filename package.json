@@ -4,13 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "wrangler dev",
-    "types": "wrangler types",
+    "dev": "wrangler dev --config wrangler.app.jsonc",
+    "types": "wrangler types --config wrangler.app.jsonc",
     "check": "tsc --noEmit",
     "test": "tsx --test test/*.test.ts",
     "build": "npm run check && npm test && wrangler deploy --dry-run --outdir .build",
     "deploy": "wrangler deploy",
-    "db:local": "wrangler d1 migrations apply fresh-tracks --local"
+    "db:local": "wrangler d1 migrations apply fresh-tracks --local --config wrangler.app.jsonc"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "5.20261024.1",
